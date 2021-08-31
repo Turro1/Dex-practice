@@ -13,6 +13,7 @@ using Bogus.DataSets;
 using Newtonsoft.Json;
 using System.Xml.Serialization;
 using System.Xml.Schema;
+using System.Threading;
 
 namespace Bank_System
 {
@@ -33,17 +34,17 @@ namespace Bank_System
         {
 
             var locker = new object();
-            var figureCalc = new FigureCalculator(locker);
+            
             //SampleForDeadlock sampleForDeadlock = new SampleForDeadlock();
             //sampleForDeadlock.GetDeadlockSample();
 
-            figureCalc.PrintFigure();
+            //figureCalc.PrintFigure();
             ThreadPool.QueueUserWorkItem(_ =>
             {
                 for (int i = 0; i < 100; i++)
                     lock (locker)
                     {
-                        figureCalc.figures.Add(new Figure { SideCount = i });
+                        
                         Console.ForegroundColor = ConsoleColor.Red;
                         Console.WriteLine(i);
                         Console.ResetColor();
