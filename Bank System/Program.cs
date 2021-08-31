@@ -29,12 +29,28 @@ namespace Bank_System
 
     List<Account> accounts = new List<Account>();
 
-        static async Task Main(string[] args)
-        { 
-            CurrencyService currencyService = new CurrencyService();
-     
-            await currencyService.GetCurrency();
-            Console.ReadLine();
+        static void Main(string[] args)
+        {
+
+            var locker = new object();
+            var figureCalc = new FigureCalculator(locker);
+            //SampleForDeadlock sampleForDeadlock = new SampleForDeadlock();
+            //sampleForDeadlock.GetDeadlockSample();
+
+            figureCalc.PrintFigure();
+            ThreadPool.QueueUserWorkItem(_ =>
+            {
+                for (int i = 0; i < 100; i++)
+                    lock (locker)
+                    {
+                        figureCalc.figures.Add(new Figure { SideCount = i });
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine(i);
+                        Console.ResetColor();
+                    }
+                Thread.Sleep(500);
+
+            });
         }
 
         public void Search()
