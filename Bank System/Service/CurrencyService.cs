@@ -15,9 +15,9 @@ namespace Bank_System.Service
 {
     public class CurrencyService
     {
+        public CurrencyResponse currency;
         public async Task<CurrencyResponse> GetCurrency()
         {
-            CurrencyResponse currency;
             HttpResponseMessage responseMessage;
 
             using (var client = new HttpClient())

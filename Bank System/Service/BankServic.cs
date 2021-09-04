@@ -20,6 +20,8 @@ namespace Bank_System.Service
 
         public Exchange exchange = new Exchange();
 
+        public CurrencyResponse currencyResponse = new CurrencyResponse();
+
         public int Sum { get; set; }
 
         ExChangeHandler _exchangeHandler;
@@ -166,19 +168,17 @@ namespace Bank_System.Service
 
         
 
-        public void MoneyTransfer(double sum, Account account1, Account account2,ExChangeHandler exChangeHandler )
+        public void MoneyTransfer(double sum, Account account1, Account account2)
         {
             if (sum > 0)
 
             {
-                exChangeHandler.Invoke($"Счёт первого аккаунта: {account1.moneyCount}\n" +
-                    $"Счёт второго аккаунта: {account2.moneyCount}");
                 account1.moneyCount = account1.moneyCount - sum;
-                //double res = exchange.ExchangeMoney(account2.typeMoney,account1.typeMoney, sum);
-               // account2.moneyCount = res * account2.typeMoney.rate + account2.moneyCount;
-                exChangeHandler.Invoke($"денежные средства переведены успешно\n" +
-                    $"Счёт первого аккаунта: {account1.moneyCount}\n" +
-                    $"Счёт второго аккаунта: {account2.moneyCount} в долларах");
+                double res = exchange.ExchangeMoney(sum, account2.typeMoney,account1.typeMoney);
+                account2.moneyCount = res * account2.typeMoney.Value + account2.moneyCount;
+                //exChangeHandler.Invoke($"денежные средства переведены успешно\n" +
+                  //  $"Счёт первого аккаунта: {account1.moneyCount}\n" +
+                    //$"Счёт второго аккаунта: {account2.moneyCount} в долларах");
             }
 
             else

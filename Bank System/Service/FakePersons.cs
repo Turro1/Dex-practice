@@ -33,9 +33,12 @@ namespace Bank_System.Service
         }
         public Account NewAccount()
         {
+            var currency = new CurrencyService();
+            BankServic bankServic = new BankServic();
+            currency.GetCurrency();
             var fakeAccount = new Faker<Account>()
                 .RuleFor(x => x.moneyCount, x => x.Random.Number(1, 10000))
-                .RuleFor(x => x.typeMoney, x => x.PickRandom<Currency>(new Grn(), new Rub(), new Dol()))
+                .RuleFor(x => x.typeMoney, x => x.PickRandom<Currency>(currency.currency.Valute.Values))
                 ;
             return fakeAccount.Generate();
         }

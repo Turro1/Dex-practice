@@ -13,14 +13,6 @@ namespace Bank_System.Models
         public int Age { get; set; }
         public int Passport { get; set; }
 
-        public Client(string Name, string SurName, int Age, int Passport)
-        {
-            this.Name = Name;
-            this.SurName = SurName;
-            this.Age = Age;
-            this.Passport = Passport;
-
-        }
         public override bool Equals(object obj)
         {
             if (obj == null || !(obj is Client))

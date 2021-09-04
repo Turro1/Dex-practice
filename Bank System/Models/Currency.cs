@@ -18,9 +18,9 @@ namespace Bank_System.Models
 
         public int Nominal { get; set; }
 
-        public string Name { get; set; }
+        public virtual string Name { get; set; }
 
-        public double Value { get; set; }
+        public virtual double Value { get; set; }
 
         public double Previous { get; set; }
     }

@@ -16,7 +16,7 @@ namespace Bank.Tests
             //Arrange
             BankServic bankServic = new BankServic();
             var clients = bankServic.GetClients();
-            var client = new Client("Егор", "Катафотов",25,15);
+            var client = new Client() {Name = "Егор",SurName = "Катафотов",Age = 25,Passport = 15 };
 
             //Act
             bankServic.AddClient(clients, client);
