@@ -61,7 +61,6 @@ namespace Bank_System.Service
 
         public void AddClient<T>(List<T> clients, T user) where T : IPerson
         {
-            clients.Add(user);
             DirectoryInfo directoryInfo = new DirectoryInfo(path);
             
             if (!directoryInfo.Exists)
@@ -72,25 +71,22 @@ namespace Bank_System.Service
                 System.IO.File.WriteAllText($"{path}\\ clients.txt", client);
 
             string mass = File.ReadAllText($"{path}\\ clients.txt");
-                    if (mass.Contains($"\"Passport\":{1}") == false)
+                    if (mass.Contains($"\"Passport\":{user.Passport}") == false)
                     {
                         Console.WriteLine("Добавлен новый клиент");
                         clients.Add(user);
-                        string client1 = JsonConvert.SerializeObject(employs);
+                        string client1 = JsonConvert.SerializeObject(clients);
                         System.IO.File.WriteAllText($"{path}\\ clients.txt", client1);
                     }
+                    
                     else
                     {
-                        Console.WriteLine("Такой клиент уже есть!");
-
+                     
                     }
-                
-            
         }
 
         public void AddEmploy<T>(List<T> employs, T user) where T : IPerson
         {
-            employs.Add(user);
             DirectoryInfo directoryInfo = new DirectoryInfo(path);
 
             if (!directoryInfo.Exists)
@@ -99,21 +95,17 @@ namespace Bank_System.Service
             }
                 string employ = JsonConvert.SerializeObject(employs);
                 System.IO.File.WriteAllText($"{path}\\ employs.txt", employ);
-                foreach (var item in employs)
-                {
-                    string[] mass = File.ReadAllLines($"{path}\\ employs.txt", Encoding.Default);
-                    if (mass[0].Contains($"\"Passport\":{item.Passport}") == false)
-                    {
-                        Console.WriteLine("Добавлен новый клиент");
-                        employs.Add(user);
-                        string employ1 = JsonConvert.SerializeObject(employs);
-                        System.IO.File.WriteAllText($"{path}\\ employs.txt", employ1);
-                    }
-                    else
-                    {
-                        Console.WriteLine("Такой сотрудник уже есть!");
+                string mass = File.ReadAllText($"{path}\\ employs.txt");
+            if (mass.Contains($"\"Passport\":{user.Passport}") == false)
+            {
+                Console.WriteLine("Добавлен новый сотрудник");
+                employs.Add(user);
+                string employ1 = JsonConvert.SerializeObject(employs);
+                System.IO.File.WriteAllText($"{path}\\ employs.txt", employ1);
+            }
+            else
+            {
 
-                    }
             }
         }
 
@@ -162,8 +154,8 @@ namespace Bank_System.Service
 
             else
             {
-                Client client = new Client(name, surname,age,passport);
-                dictClients.Add(client, new List<Account>());
+                //Client client = new Client(name, surname,age,passport);
+                //dictClients.Add(client, new List<Account>());
             }
         }
 

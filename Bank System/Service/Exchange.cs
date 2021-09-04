@@ -7,14 +7,14 @@ using System.Threading.Tasks;
 
 namespace Bank_System.Service
 {
-    public class Exchange //: IExchange
+    public class Exchange : IExchange
     {
-       /* public double ExchangeMoney<T, U>(double countMoney, T originalCurrency, U converingCurrency) where T : ICurrency where U : ICurrency
+        public double ExchangeMoney<T, U>(double countMoney, T originalCurrency, U converingCurrency) where T : Currency where U : Currency
        {
-            Реализовать интерфейс IExchange  в классе Exchange.
+            
 
-            double result = (countMoney / originalCurrency.rate) * converingCurrency.rate;
+            double result = (countMoney / originalCurrency.Value) * converingCurrency.Value;
             return result;
-       }*/
+       }
     }
 }

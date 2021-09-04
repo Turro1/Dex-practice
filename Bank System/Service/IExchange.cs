@@ -10,7 +10,7 @@ namespace Bank_System.Service
     public interface IExchange
     {
 
-        double ExchangeMoney<T, U>(double countMoney, T originalCurrency, U converingCurrency); //where T : ICurrency where U : ICurrency;
+        double ExchangeMoney<T, U>(double countMoney, T originalCurrency, U converingCurrency) where T : Currency where U : Currency;
 
     }
 }
