@@ -28,38 +28,34 @@ namespace Bank_System
 
         static async Task Main(string[] args)
         {
-            Random random = new Random();
-            BankServic bankService = new BankServic();
-            var locker = new object();
-            CurrencyService currencyService = new CurrencyService();
-            string path = Path.Combine("E:\\", "Курсы Dex", "Dex Practic", "Bank System", "Files");
+             Program program = new Program();
+             Random random = new Random();
+             BankServic bankService = new BankServic();
+             var locker = new object();
+             CurrencyService currencyService = new CurrencyService();
+             string path = Path.Combine("E:\\", "Курсы Dex", "Dex Practic", "Bank System", "Files");
+             ThreadPool.QueueUserWorkItem(_ =>
+             {
 
-            await currencyService.GetCurrency();
-            ThreadPool.QueueUserWorkItem(_ =>
-            {
-                
-                while (true)
-                    //for (int i = 0; i < 50; i++)
-                    
-                lock (locker)
-                    {
-                        var generator = new FakePersons();
-                        var account1 = generator.NewAccount();
-                        Console.WriteLine(/*account1.ID,account1.moneyCount,*/ account1.Name.ToString(), account1.Value.ToString());
-                        Console.ForegroundColor = ConsoleColor.DarkGreen;
-                        GeneratingPersonsList(bankService.clients, 10);
-                        Console.ResetColor();
-                    }
-                Thread.Sleep(500);
-            });
+                 while (true)
+
+                 lock (locker)
+                     {  
+                         Console.ForegroundColor = ConsoleColor.DarkGreen;
+                         program.GeneratingPersonsList(bankService.clients, 10);
+                         Console.ResetColor();
+                     }
+
+                 Thread.Sleep(500);
+
+             });
 
             ThreadPool.QueueUserWorkItem(_ =>
             {
-                
+
                 while (true)
-                    //for (int i = 0; i < 100; i++)
-                    
-                lock (locker)
+
+                    lock (locker)
                     {
                         var readText = File.ReadAllText($"{path}\\ clients.txt");
                         var pos = JsonConvert.DeserializeObject<List<Client>>(readText);
@@ -72,9 +68,8 @@ namespace Bank_System
             });
             Console.ReadLine();
         }
-        public static void GeneratingPersonsList<T>(List<T> usersList, int usersCount)
+        public void GeneratingPersonsList<T>(List<T> usersList, int usersCount)
         {
-            BankServic bankService = new BankServic();
             var generator = new FakePersons();
             for (int i = 0; i < usersCount; i++)
             {
@@ -85,7 +80,17 @@ namespace Bank_System
                 else if (usersList is List<Employ>)
                 {
                     bankService.AddEmploy(bankService.employs, generator.NewEmploy());
+                    generator.NewAccount();
                 }
+            }
+        }
+        public void GeneratingClientsAccount(int usersCount)
+        {
+            var generator = new FakePersons();
+            Client client = new Client();
+            for (int i = 0; i < usersCount; i++)
+            {
+                    bankService.AddClientAccount(bankService.clients[i], generator.NewAccount());
             }
         }
         public void Search()

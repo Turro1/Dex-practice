@@ -27,10 +27,8 @@ namespace Bank_System.Service
         ExChangeHandler _exchangeHandler;
 
         public List<Employ> employs = new List<Employ>();
-
         public List<Client> clients = new List<Client>();
-
-        public Dictionary<Client, List<Account>> dictClients = new Dictionary<Client, List<Account>>();
+        public Dictionary<int, List<Account>> dictClients = new Dictionary<int, List<Account>>();
         
         public void DeligateRegister(ExChangeHandler exchangeHandler)
         {
@@ -131,16 +129,16 @@ namespace Bank_System.Service
             {
                 directoryInfo.Create();
             }
-            if (dictClients.ContainsKey(client))
+            if (dictClients.ContainsKey(client.Passport))
             {
-                dictClients[client].Add(account);
+                dictClients[client.Passport].Add(account);
                 string clients = JsonConvert.SerializeObject(dictClients);
                 System.IO.File.WriteAllText($"{path}\\ dictClients.txt", clients);
             }
 
             else
             {
-                dictClients.Add(client, new List<Account>() { account });
+                dictClients.Add(client.Passport, new List<Account>() { account });
                 string clients = JsonConvert.SerializeObject(dictClients);
                 System.IO.File.WriteAllText($"{path}\\ dictClients.txt", clients);
             }
@@ -170,12 +168,12 @@ namespace Bank_System.Service
 
         public void MoneyTransfer(double sum, Account account1, Account account2)
         {
-            if (sum > 0)
+            if (account1.moneyCount > 0 || account1.moneyCount > sum)
 
             {
                 account1.moneyCount = account1.moneyCount - sum;
                 double res = exchange.ExchangeMoney(sum, account2.typeMoney,account1.typeMoney);
-                account2.moneyCount = res * account2.typeMoney.Value + account2.moneyCount;
+                account2.moneyCount = res + account2.moneyCount;
                 //exChangeHandler.Invoke($"денежные средства переведены успешно\n" +
                   //  $"Счёт первого аккаунта: {account1.moneyCount}\n" +
                     //$"Счёт второго аккаунта: {account2.moneyCount} в долларах");

@@ -31,14 +31,14 @@ namespace Bank_System.Service
                 ;
             return fakeClient.Generate();
         }
-        public Account NewAccount()
+        public  Account NewAccount()
         {
-            var currency = new CurrencyService();
+            var currencyService = new CurrencyService();
+            CurrencyResponse currencyResponse = new CurrencyResponse();
             BankServic bankServic = new BankServic();
-            currency.GetCurrency();
             var fakeAccount = new Faker<Account>()
                 .RuleFor(x => x.moneyCount, x => x.Random.Number(1, 10000))
-                .RuleFor(x => x.typeMoney, x => x.PickRandom<Currency>(currency.currency.Valute.Values))
+                .RuleFor(x => x.typeMoney, x => x.PickRandom<Currency>(new Rub(), new Dol(), new Grn()))
                 ;
             return fakeAccount.Generate();
         }
